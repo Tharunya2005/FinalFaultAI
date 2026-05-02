@@ -1,0 +1,118 @@
+/* ============================================
+   FaultAI — STYLESHEET
+   AI-Powered Fault Diagnosis System
+   ============================================ */
+
+/* ---------- Google Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+
+/* ---------- CSS Variables / Design Tokens ---------- */
+:root {
+    --primary: #00d4ff;
+    --primary-rgb: 0, 212, 255;
+    --bg-dark: #0a0a0a;
+    --bg-card: rgba(255, 255, 255, 0.08);
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+    --success: #34d399;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+}
+
+/* ---------- Global Transitions ---------- */
+* {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* ---------- Glassmorphism Effect ---------- */
+.glass {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+}
+
+/* ---------- Hero Section Background ---------- */
+.hero-bg {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+}
+
+/* ---------- Card Hover Animation ---------- */
+.card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 50px -12px rgb(var(--primary-rgb) / 0.15);
+}
+
+/* ---------- Typewriter Animation ---------- */
+.typing {
+    overflow: hidden;
+    border-right: 3px solid var(--primary);
+    white-space: nowrap;
+    animation: typing 3.5s steps(40, end) forwards,
+        blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: var(--primary)
+    }
+}
+
+/* ---------- Symptom Chip Toggle ---------- */
+.symptom-chip {
+    transition: all 0.2s ease;
+}
+
+.symptom-chip.active {
+    background-color: var(--primary);
+    color: #000;
+    transform: scale(1.05);
+}
+
+/* ---------- Loading Spinner ---------- */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* ---------- Pulse Animation (Status Dot) ---------- */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

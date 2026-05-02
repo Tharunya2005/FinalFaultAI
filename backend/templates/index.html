@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ============================================
+         FaultAI — MAIN HTML PAGE
+         This file contains ONLY the structure/layout.
+         Styles are in style.css
+         Logic is in script.js
+         Backend is in Python (backend/app.py)
+         ============================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaultAI - AI-Powered Hydraulic Fault Diagnosis</title>
+    <meta name="description"
+        content="AI-powered hydraulic system fault diagnosis using RAG retrieval from the Vickers Industrial Hydraulics Manual and xAI Grok.">
+
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="bg-[#0a0a0a] text-white font-sans">
+
+    <!-- ════════════════════════════════════════════
+         NAVBAR — Navigation + Status Indicators
+         ════════════════════════════════════════════ -->
+    <nav class="border-b border-white/10 bg-black/70 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+
+            <!-- Logo -->
+            <div class="flex items-center gap-x-3">
+                <div
+                    class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center shadow-inner">
+                    <i class="fa-solid fa-robot text-2xl text-black"></i>
+                </div>
+                <h1 class="text-3xl font-semibold tracking-tighter" style="font-family: 'Space Grotesk', sans-serif;">
+                    FaultAI</h1>
+                <span
+                    class="px-3 py-1 text-xs font-medium bg-white/10 text-cyan-400 rounded-3xl border border-cyan-400/30">
+                    xAI + RAG
+                </span>
+            </div>
+
+            <!-- Nav Links + Status -->
+            <div class="flex items-center gap-x-8">
+                <a href="#" onclick="showSection('home')"
+                    class="flex items-center gap-x-2 text-sm font-medium hover:text-cyan-400">
+                    <i class="fa-solid fa-house"></i><span>Home</span>
+                </a>
+                <a href="#" onclick="showSection('diagnose')"
+                    class="flex items-center gap-x-2 text-sm font-medium hover:text-cyan-400">
+                    <i class="fa-solid fa-stethoscope"></i><span>Diagnose</span>
+                </a>
+                <a href="#" onclick="showSection('history')"
+                    class="flex items-center gap-x-2 text-sm font-medium hover:text-cyan-400">
+                    <i class="fa-solid fa-history"></i><span>History</span>
+                </a>
+                <a href="#" onclick="showSection('knowledge')"
+                    class="flex items-center gap-x-2 text-sm font-medium hover:text-cyan-400">
+                    <i class="fa-solid fa-book"></i><span>Knowledge Base</span>
+                </a>
+
+                <!-- Backend Status Indicator -->
+                <div id="backend-status"
+                    class="flex items-center gap-x-3 bg-white/5 hover:bg-white/10 px-4 h-10 rounded-3xl text-sm border border-white/10">
+                    <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
+                    <span class="font-medium text-gray-400">Checking...</span>
+                </div>
+
+                <!-- API Key Button -->
+                <div onclick="toggleApiModal()"
+                    class="cursor-pointer flex items-center justify-center w-10 h-10 rounded-2xl bg-white/10 hover:bg-cyan-400 hover:text-black">
+                    <i class="fa-solid fa-key"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ════════════════════════════════════════════
+         HERO / HOME SECTION
+         Landing page with stats and demo
+         ════════════════════════════════════════════ -->
+    <section id="home" class="hero-bg min-h-screen flex items-center">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 gap-16 items-center">
+
+            <!-- Left: Text Content -->
+            <div class="space-y-8">
+                <div
+                    class="inline-flex items-center gap-x-2 px-5 py-2 bg-white/10 rounded-3xl text-sm font-medium border border-cyan-400/30">
+                    <i class="fa-solid fa-bolt text-cyan-400"></i>
+                    POWERED BY xAI GROK + RAG
+                </div>
+
+                <h1 class="text-7xl leading-none font-semibold tracking-tighter"
+                    style="font-family: 'Space Grotesk', sans-serif;">
+                    Diagnose hydraulic faults.<br>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
+                        Get solutions instantly.
+                    </span>
+                </h1>
+
+                <p class="text-2xl text-gray-400 max-w-md">
+                    Describe symptoms &rarr; RAG retrieves from the Vickers Hydraulics Manual &rarr; Grok generates
+                    step-by-step fixes.
+                </p>
+
+                <div class="flex items-center gap-x-4">
+                    <button onclick="showSection('diagnose')"
+                        class="px-8 py-5 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-semibold text-xl rounded-3xl flex items-center gap-x-3 hover:shadow-2xl hover:shadow-cyan-400/50">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        START DIAGNOSIS
+                    </button>
+                    <button onclick="demoDiagnosis()"
+                        class="px-8 py-5 border border-white/30 hover:border-white/60 text-white font-medium text-xl rounded-3xl flex items-center gap-x-3">
+                        <i class="fa-solid fa-play"></i>
+                        Watch Demo
+                    </button>
+                </div>
+
+                <!-- Feature Checkmarks -->
+                <div class="flex items-center gap-x-8 text-sm">
+                    <div class="flex items-center gap-x-2">
+                        <i class="fa-solid fa-check text-emerald-400"></i>
+                        <span>PDF-based RAG retrieval</span>
+                    </div>
+                    <div class="flex items-center gap-x-2">
+                        <i class="fa-solid fa-check text-emerald-400"></i>
+                        <span>xAI Grok solutions</span>
+                    </div>
+                    <div class="flex items-center gap-x-2">
+                        <i class="fa-solid fa-check text-emerald-400"></i>
+                        <span>Page-referenced answers</span>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div id="home-stats" class="pt-8 border-t border-white/10 flex gap-x-8">
+                    <div>
+                        <div class="text-4xl font-semibold text-cyan-400" id="stat-chunks">—</div>
+                        <div class="text-sm text-gray-400">Text chunks indexed</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-semibold text-cyan-400">4.8s</div>
+                        <div class="text-sm text-gray-400">Avg. response time</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-semibold text-cyan-400" id="stat-source">—</div>
+                        <div class="text-sm text-gray-400">PDF knowledge source</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Demo Visual -->
+            <div class="relative">
+                <div
+                    class="absolute -inset-10 bg-gradient-to-br from-cyan-400/20 to-transparent rounded-[4rem] blur-3xl">
+                </div>
+                <div class="glass border border-white/10 rounded-3xl p-8 shadow-2xl">
+                    <div class="bg-black rounded-2xl p-6 mb-6">
+                        <div class="flex justify-between mb-4">
+                            <div class="flex items-center gap-x-3">
+                                <div
+                                    class="w-8 h-8 bg-orange-500 rounded-2xl flex items-center justify-center text-xs font-bold">
+                                    &#9888;&#65039;</div>
+                                <div>
+                                    <div class="font-semibold">Hydraulic System</div>
+                                    <div class="text-xs text-gray-400">Pumps &bull; Valves &bull; Cylinders</div>
+                                </div>
+                            </div>
+                            <div
+                                class="text-xs bg-emerald-400/10 text-emerald-400 px-4 rounded-3xl flex items-center font-medium">
+                                LIVE DIAGNOSIS
+                            </div>
+                        </div>
+                        <div id="demo-output" class="space-y-4 text-sm">
+                            <!-- Populated by script.js demo -->
+                        </div>
+                    </div>
+                    <div
+                        class="text-center text-xs uppercase tracking-widest text-cyan-400 font-medium flex items-center justify-center gap-x-2">
+                        <div class="h-px w-12 bg-cyan-400"></div>
+                        POWERED BY xAI GROK + PDF RAG RETRIEVAL
+                        <div class="h-px w-12 bg-cyan-400"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         DIAGNOSE SECTION
+         Input symptoms → calls Python backend → shows results
+         ════════════════════════════════════════════ -->
+    <section id="diagnose" class="hidden max-w-7xl mx-auto px-6 py-16">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <h2 class="text-5xl font-semibold tracking-tighter">Hydraulic Fault Diagnosis</h2>
+                <p class="text-gray-400 text-xl">Describe the hydraulic symptoms. Grok + RAG will diagnose from the
+                    Vickers Manual.</p>
+            </div>
+            <div class="flex items-center text-sm font-medium gap-x-2 bg-white/5 px-5 h-12 rounded-3xl">
+                <i class="fa-solid fa-filter"></i>
+                <select id="category-select" class="bg-transparent focus:outline-none">
+                    <option value="all">🔧 All Systems</option>
+                    <option value="pumps">⚙️ Pumps & Motors</option>
+                    <option value="valves">🔩 Valves & Controls</option>
+                    <option value="cylinders">🔲 Cylinders & Actuators</option>
+                    <option value="filters">🧪 Filters & Fluids</option>
+                    <option value="seals">💧 Seals & Leaks</option>
+                    <option value="circuits">🔌 Circuits & Piping</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-8">
+
+            <!-- Input Panel -->
+            <div class="col-span-5 glass border border-white/10 rounded-3xl p-8 h-fit sticky top-8">
+                <h3 class="font-semibold text-lg mb-6 flex items-center gap-x-3">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    Describe the hydraulic symptoms
+                </h3>
+
+                <textarea id="symptoms-input" rows="4"
+                    class="w-full bg-black/40 border border-white/20 focus:border-cyan-400 rounded-3xl px-6 py-5 text-lg placeholder:text-gray-400 focus:outline-none resize-none"
+                    placeholder="e.g. Hydraulic pump making loud whining noise, system pressure dropping below normal, foamy oil in reservoir..."></textarea>
+
+                <!-- Quick Symptom Chips -->
+                <div class="mt-8">
+                    <p class="text-xs uppercase tracking-widest mb-4 text-gray-400">Quick symptoms</p>
+                    <div id="symptom-chips" class="flex flex-wrap gap-2">
+                        <!-- Populated by script.js -->
+                    </div>
+                </div>
+
+                <!-- Diagnose Button -->
+                <button onclick="runDiagnosis()"
+                    class="mt-10 w-full h-16 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-semibold text-2xl rounded-3xl flex items-center justify-center gap-x-3 hover:shadow-2xl hover:shadow-cyan-400/40">
+                    <i class="fa-solid fa-brain"></i>
+                    DIAGNOSE WITH AI
+                    <span class="text-sm bg-black/20 text-black px-4 h-8 rounded-3xl flex items-center">Grok +
+                        RAG</span>
+                </button>
+
+                <div class="text-center text-xs text-gray-500 mt-6 flex items-center justify-center gap-x-4">
+                    <div>&#128274; Private</div>
+                    <div>&#128225; PDF RAG</div>
+                    <div>&#9889; xAI Grok</div>
+                </div>
+            </div>
+
+            <!-- Results Panel (filled by script.js after diagnosis) -->
+            <div id="results-panel" class="col-span-7 hidden glass border border-white/10 rounded-3xl p-8"></div>
+
+            <!-- Empty State -->
+            <div id="empty-results"
+                class="col-span-7 glass border border-white/10 rounded-3xl p-8 flex flex-col items-center justify-center text-center">
+                <div
+                    class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-cyan-400/10 to-transparent rounded-full flex items-center justify-center text-6xl">
+                    &#129302;
+                </div>
+                <h4 class="text-2xl font-medium mb-2">Your diagnosis will appear here</h4>
+                <p class="text-gray-400 max-w-xs">Our AI will retrieve relevant passages from the Vickers Hydraulics
+                    Manual and Grok will generate precise diagnoses.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         HISTORY SECTION
+         Shows past diagnoses (stored in memory)
+         ════════════════════════════════════════════ -->
+    <section id="history" class="hidden max-w-7xl mx-auto px-6 py-16">
+        <h2 class="text-5xl font-semibold tracking-tighter mb-8">Diagnosis History</h2>
+        <div id="history-list" class="space-y-6">
+            <!-- Populated by script.js -->
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         KNOWLEDGE BASE SECTION
+         Displays PDF chunks from Python backend
+         ════════════════════════════════════════════ -->
+    <section id="knowledge" class="hidden max-w-7xl mx-auto px-6 py-16">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <h2 class="text-5xl font-semibold tracking-tighter mb-2">Knowledge Base &bull; PDF RAG</h2>
+                <p class="text-gray-400">Text passages extracted from the Vickers Industrial Hydraulics Manual</p>
+            </div>
+            <div id="kb-info" class="text-sm text-gray-400"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-6" id="kb-grid">
+            <!-- Populated by script.js from backend API -->
+        </div>
+        <!-- Pagination -->
+        <div id="kb-pagination" class="flex items-center justify-center gap-x-4 mt-10">
+            <!-- Populated by script.js -->
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         API KEY MODAL
+         User enters their xAI Grok API key here
+         Key is sent to Python backend with each request
+         ════════════════════════════════════════════ -->
+    <div onclick="if(event.target.id === 'api-modal')toggleApiModal()" id="api-modal"
+        class="hidden fixed inset-0 bg-black/80 backdrop-blur-xl z-[9999] flex items-center justify-center">
+        <div onclick="event.stopImmediatePropagation()"
+            class="glass border border-white/20 rounded-3xl w-full max-w-md p-8">
+            <h3 class="text-2xl mb-6">xAI API Configuration</h3>
+            <p class="text-sm text-gray-400 mb-4">
+                Enter your xAI Grok API key (get it at
+                <a href="https://console.x.ai" target="_blank" class="text-cyan-400">console.x.ai</a>)
+            </p>
+
+            <input id="api-key-input" type="password"
+                class="w-full bg-black border border-white/30 rounded-3xl px-6 py-5 text-lg focus:border-cyan-400 focus:outline-none"
+                placeholder="xai-...">
+
+            <div class="flex items-center justify-between mt-8">
+                <button onclick="saveApiKey()" class="px-8 py-4 bg-cyan-400 text-black rounded-3xl font-semibold">
+                    Save &amp; Connect
+                </button>
+                <button onclick="toggleApiModal()" class="text-gray-400">Cancel</button>
+            </div>
+
+            <div id="api-status" class="mt-6 text-xs"></div>
+        </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════
+         LOAD JAVASCRIPT (at bottom of body)
+         ════════════════════════════════════════════ -->
+    <script src="/static/script.js"></script>
+
+</body>
+
+</html>
