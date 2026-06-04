@@ -1,11 +1,7 @@
-# ============================================
-# FaultAI — Python Dependencies
-# Install with: pip install -r requirements.txt
-# ============================================
-
-flask==3.1.1                # Web server framework
-flask-cors==5.0.1           # Cross-origin requests (frontend ↔ backend)
-scikit-learn==1.6.1         # TF-IDF vectorizer + cosine similarity (RAG)
-requests==2.32.3            # HTTP client for xAI Grok API calls
-PyMuPDF==1.25.4             # PDF text extraction for RAG knowledge base
+flask==3.1.1
+flask-cors==5.0.1
+scikit-learn==1.6.1
+requests==2.32.3
+PyMuPDF==1.25.4
+python-dotenv
 gunicorn

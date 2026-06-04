@@ -5,8 +5,7 @@ services:
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
+    pythonVersion: "3.11.0"
     envVars:
       - key: API_KEY
-        sync: false   # You'll enter this manually in Render dashboard
-      - key: PYTHON_VERSION
-        value: 3.11.0
+        sync: false
